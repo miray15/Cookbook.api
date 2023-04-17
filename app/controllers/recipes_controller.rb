@@ -18,4 +18,19 @@ def show
   render :show 
 end 
 
+def update
+  @recipe = Recipe.find_by(id: params[:id])
+  @recipe.update(
+    name: params[:name] || @recipe.name,
+    ingredients: params[:ingredients] || @recipe.ingredients
+  )
+  render :show
+end
+
+def destroy 
+  @recipe = Recipe.find_by(id: params[:id])
+  @recipe.destroy
+  render json: { message: "Recipe destroyed successfully" }
+end 
+
 end

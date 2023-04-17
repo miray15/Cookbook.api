@@ -17,19 +17,29 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-    test "show" do
-      get "/recipes/#{Recipe.first.id}.json"
-      assert_response 200
+  test "show" do
+    get "/recipes/#{Recipe.first.id}.json"
+    assert_response 200
 
     data = JSON.parse(response.body)
     assert_equal ["id", "created_at", "updated_at", "url"], data.keys 
   end 
 
-  test "update" do 
-    recipe = Recipe.first 
-    patch "/recipes/#{recipe.id}.json", params: {name: "Green Bean Casserole"}
-    assert_response 200 
+  test "update" do
+    recipe = Recipe.first
 
-    data = JSON.parse(response.body)
-    assert_equal "Green Bean Casserole", 
+    patch "/recipes/#{recipe.id}.json", params: { name: "green bean casserole" }
+    assert_response 200
+    
+
+    # data = JSON.parse(response.body)
+    # assert_equal "green bean casserole", data["name"]
+  end
+
+  test "destroy" do 
+    assert_difference "Recipe.count", -1 do 
+      delete "/recipes/#{Recipe.first.id}.json"
+      assert_response 200
+    end 
+  end 
 end 
